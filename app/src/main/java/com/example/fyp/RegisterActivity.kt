@@ -1,5 +1,6 @@
 package com.example.fyp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -25,9 +26,9 @@ class RegisterActivity : AppCompatActivity() {
         val tfConPassword = findViewById<TextView>(R.id.tfConPassword)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
 
-
+/*
         val database = Firebase.database
-        val myRef = database.getReference("Customer")
+        val myRef = database.getReference("Customer")*/
 
 
         btnRegister.setOnClickListener(){
@@ -36,23 +37,44 @@ class RegisterActivity : AppCompatActivity() {
             val password = tfPassword.text.toString()
             val conPassword = tfConPassword.text.toString()
 
+            register(email, password)
 
             //add check email availability & name empty
+/*
             if(password == conPassword) {
-                val customer = Customer(email, name, password)
+*/
+                /*val customer = Customer(email, name, password)
 
                 myRef.child(customer.email).setValue(customer)
                     .addOnSuccessListener {
                         Toast.makeText(applicationContext, "Add successful", Toast.LENGTH_LONG)
                             .show()
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
                     }
                     .addOnFailureListener {
                         Toast.makeText(applicationContext, "Add failed", Toast.LENGTH_LONG).show()
-                    }
+                    }*/
             }
         }
 
+
+
+    private fun register(email: String, psw: String) {
+
+        auth.createUserWithEmailAndPassword(email, psw)
+            .addOnSuccessListener {
+                val user = auth.currentUser
+                //binding.textView.text = "Registered > ${user!!.email}"
+                Toast.makeText(applicationContext, "User created", Toast.LENGTH_LONG).show()
+            }
+            .addOnFailureListener { e ->
+                //binding.textView.text = e.message
+                Toast.makeText(applicationContext, "Failed to create user", Toast.LENGTH_LONG).show()
+            }
     }
+
+
 
 
 }
